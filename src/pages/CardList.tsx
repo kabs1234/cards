@@ -25,6 +25,7 @@ export default function CardList({ cards }: CardListProps): ReactElement {
             key={card.id}
             sx={{
               display: 'list-item',
+              padding: '0',
               '&:not(:last-child)': {
                 marginBottom: '20px',
               },
