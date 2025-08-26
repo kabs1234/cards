@@ -8,7 +8,7 @@ export type CardType = {
   createdAt: string;
 };
 
-export type CardFormData = {
+export type CardForm = {
   cardNumber: string;
   clientName: string;
   expiryDate: string;

@@ -1,8 +1,9 @@
 import { Button, Modal, FormControl, TextField, Box } from '@mui/material';
 import { useState, type ChangeEvent, type ReactElement } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import type { CardFormData } from '../../types/types';
+import type { CardForm } from '../../types/types';
 import PreviewCard from '../PreviewCard/PreviewCard';
+import SaveCardButton from '../SaveCardButton/SaveCardButton';
 
 const cardFormStyles = {
   position: 'absolute',
@@ -29,13 +30,15 @@ const openFormButtonStyles = {
 
 export default function CardForm(): ReactElement {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const [form, setForm] = useState<CardFormData>({
+  const initialFormState = {
     cardNumber: '',
     clientName: '',
     expiryDate: '',
     cvc: '',
     cardType: '',
-  });
+  };
+
+  const [cardForm, setCardForm] = useState<CardForm>(initialFormState);
 
   const onFieldChange = (
     evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -43,17 +46,22 @@ export default function CardForm(): ReactElement {
   ): void => {
     const value = evt.target.value;
 
-    setForm((prevState) => ({
+    setCardForm((prevState) => ({
       ...prevState,
       [fieldName]: value,
     }));
   };
 
-  const validateForm = (): boolean => {
-    return Object.values(form).every(Boolean);
+  const isFormValidated = (): boolean => {
+    return Object.values(cardForm).every(Boolean);
   };
 
   const onFormClose = () => setIsFormOpen(false);
+
+  const onCardSuccesfulSave = (): void => {
+    onFormClose();
+    setCardForm(initialFormState);
+  };
 
   const onFormButtonClick = (): void => {
     setIsFormOpen(!isFormOpen);
@@ -61,9 +69,7 @@ export default function CardForm(): ReactElement {
 
   return (
     <Box sx={{ textAlign: 'center' }}>
-      <Button onClick={onFormButtonClick}>
-        {isFormOpen ? 'Close Card' : 'Add card'}
-      </Button>
+      <Button onClick={onFormButtonClick}>Add card</Button>
 
       <Modal open={isFormOpen} onClose={onFormClose}>
         <Box sx={cardFormStyles}>
@@ -74,7 +80,7 @@ export default function CardForm(): ReactElement {
           <FormControl sx={{ backgroundColor: 'white', marginBottom: '20px' }}>
             <TextField
               label="Fullname"
-              value={form.clientName}
+              value={cardForm.clientName}
               onChange={(evt) => onFieldChange(evt, 'clientName')}
               variant="standard"
               required
@@ -82,36 +88,40 @@ export default function CardForm(): ReactElement {
             <TextField
               label="Card number"
               variant="standard"
-              value={form.cardNumber}
+              value={cardForm.cardNumber}
               onChange={(evt) => onFieldChange(evt, 'cardNumber')}
               slotProps={{ htmlInput: { maxLength: 16 } }}
               required
             />
             <TextField
               label="Expiration date"
-              value={form.expiryDate}
+              value={cardForm.expiryDate}
               onChange={(evt) => onFieldChange(evt, 'expiryDate')}
               variant="standard"
               required
             />
             <TextField
               label="CVC/CVV"
-              value={form.cvc}
+              value={cardForm.cvc}
               onChange={(evt) => onFieldChange(evt, 'cvc')}
               variant="standard"
               required
             />
             <TextField
               label="Card type"
-              value={form.cardType}
+              value={cardForm.cardType}
               onChange={(evt) => onFieldChange(evt, 'cardType')}
               variant="standard"
               required
             />
           </FormControl>
 
-          <PreviewCard previewData={form} isFormValidated={validateForm()} />
-          <Button>Save card</Button>
+          <PreviewCard card={cardForm} isFormValidated={isFormValidated()} />
+          <SaveCardButton
+            card={cardForm}
+            isFormValidated={isFormValidated()}
+            onCardSuccesfulSave={onCardSuccesfulSave}
+          />
         </Box>
       </Modal>
     </Box>
