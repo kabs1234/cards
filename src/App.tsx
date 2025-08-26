@@ -5,9 +5,12 @@ import './App.css';
 import { Box } from '@mui/material';
 import { useGetCardsQuery } from './api/cardsApi';
 import Loader from './components/Loader/Loader';
+import { useAppSelector } from './hooks/hooks';
+import { getCards } from './store/cardsSlice/card.selectors';
 
 export default function App(): ReactElement {
-  const { isUninitialized, isLoading, isError, data } = useGetCardsQuery();
+  const { isUninitialized, isLoading, isError } = useGetCardsQuery();
+  const cards = useAppSelector(getCards);
 
   if (isLoading || isUninitialized) {
     return <Loader />;
@@ -21,7 +24,7 @@ export default function App(): ReactElement {
     <Box sx={{ width: '280px', margin: '20px auto 0' }}>
       <CardForm />
 
-      <CardList cards={data} />
+      <CardList cards={cards} />
     </Box>
   );
 }
