@@ -1,6 +1,8 @@
 import { Button, Modal, FormControl, TextField, Box } from '@mui/material';
-import { useState, type ReactElement } from 'react';
+import { useState, type ChangeEvent, type ReactElement } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import type { CardFormData } from '../../types/types';
+import PreviewCard from '../PreviewCard/PreviewCard';
 
 const cardFormStyles = {
   position: 'absolute',
@@ -9,9 +11,8 @@ const cardFormStyles = {
   transform: 'translate(-50%, -50%)',
   width: '280px',
   height: '300px',
-  border: '2px solid #000',
   boxShadow: 24,
-  p: 2,
+  p: '20px',
   bgcolor: 'background.paper',
   '& .MuiBackdrop-root': { backgroundColor: 'transparent' },
 };
@@ -28,7 +29,31 @@ const openFormButtonStyles = {
 
 export default function CardForm(): ReactElement {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const onCloseFormButtonClick = () => setIsFormOpen(false);
+  const [form, setForm] = useState<CardFormData>({
+    cardNumber: '',
+    clientName: '',
+    expiryDate: '',
+    cvc: '',
+    cardType: '',
+  });
+
+  const onFieldChange = (
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fieldName: string
+  ): void => {
+    const value = evt.target.value;
+
+    setForm((prevState) => ({
+      ...prevState,
+      [fieldName]: value,
+    }));
+  };
+
+  const validateForm = (): boolean => {
+    return Object.values(form).every(Boolean);
+  };
+
+  const onFormClose = () => setIsFormOpen(false);
 
   const onFormButtonClick = (): void => {
     setIsFormOpen(!isFormOpen);
@@ -40,29 +65,52 @@ export default function CardForm(): ReactElement {
         {isFormOpen ? 'Close Card' : 'Add card'}
       </Button>
 
-      <Modal
-        sx={cardFormStyles}
-        open={isFormOpen}
-        onClose={onCloseFormButtonClick}
-      >
-        <Box sx={{ position: 'relative' }}>
-          <Button sx={openFormButtonStyles} onClick={onCloseFormButtonClick}>
+      <Modal open={isFormOpen} onClose={onFormClose}>
+        <Box sx={cardFormStyles}>
+          <Button sx={openFormButtonStyles} onClick={onFormClose}>
             <CloseIcon />
             <span className="visually-hidden">Close card form</span>
           </Button>
           <FormControl sx={{ backgroundColor: 'white', marginBottom: '20px' }}>
-            <TextField label="Fullname" variant="standard" />
+            <TextField
+              label="Fullname"
+              value={form.clientName}
+              onChange={(evt) => onFieldChange(evt, 'clientName')}
+              variant="standard"
+              required
+            />
             <TextField
               label="Card number"
               variant="standard"
+              value={form.cardNumber}
+              onChange={(evt) => onFieldChange(evt, 'cardNumber')}
               slotProps={{ htmlInput: { maxLength: 16 } }}
+              required
             />
-            <TextField label="Expiration date" variant="standard" />
-            <TextField label="CVC/CVV" variant="standard" />
-            <TextField label="Card type" variant="standard" />
+            <TextField
+              label="Expiration date"
+              value={form.expiryDate}
+              onChange={(evt) => onFieldChange(evt, 'expiryDate')}
+              variant="standard"
+              required
+            />
+            <TextField
+              label="CVC/CVV"
+              value={form.cvc}
+              onChange={(evt) => onFieldChange(evt, 'cvc')}
+              variant="standard"
+              required
+            />
+            <TextField
+              label="Card type"
+              value={form.cardType}
+              onChange={(evt) => onFieldChange(evt, 'cardType')}
+              variant="standard"
+              required
+            />
           </FormControl>
 
-          <Button>Preview card</Button>
+          <PreviewCard previewData={form} isFormValidated={validateForm()} />
           <Button>Save card</Button>
         </Box>
       </Modal>

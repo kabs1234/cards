@@ -8,4 +8,12 @@ export type CardType = {
   createdAt: string;
 };
 
+export type CardFormData = {
+  cardNumber: string;
+  clientName: string;
+  expiryDate: string;
+  cvc: string;
+  cardType: string;
+};
+
 export type Cards = CardType[];
