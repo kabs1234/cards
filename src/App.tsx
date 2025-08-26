@@ -1,29 +1,27 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import CardList from './pages/CardList';
-import type { Cards } from './types/types';
-import { fetchCards } from './api/cardsApi';
 import CardForm from './components/CardForm/CardForm';
 import './App.css';
 import { Box } from '@mui/material';
+import { useGetCardsQuery } from './api/cardsApi';
+import Loader from './components/Loader/Loader';
 
 export default function App(): ReactElement {
-  const [cards, setCards] = useState<Cards | null>(null);
+  const { isUninitialized, isLoading, isError, data } = useGetCardsQuery();
 
-  useEffect(() => {
-    const getCards = async (): Promise<void> => {
-      const cards = await fetchCards();
+  if (isLoading || isUninitialized) {
+    return <Loader />;
+  }
 
-      setCards(cards);
-    };
-
-    getCards();
-  }, []);
+  if (isError) {
+    return <p>Unexpected error occured! Try to reload the page please!</p>;
+  }
 
   return (
     <Box sx={{ width: '280px', margin: '20px auto 0' }}>
       <CardForm />
 
-      <CardList cards={cards} />
+      <CardList cards={data} />
     </Box>
   );
 }

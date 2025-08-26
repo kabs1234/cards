@@ -1,14 +1,16 @@
-import axios from 'axios';
 import type { Cards } from '../types/types';
 import { BASE_URL } from '../const';
 
-export const fetchCards = async (): Promise<Cards> => {
-  try {
-    const request = await axios.get<Cards>(`${BASE_URL}/cards`);
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-    return request.data;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};
+export const cardsApi = createApi({
+  reducerPath: 'cardsApi',
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  endpoints: (build) => ({
+    getCards: build.query<Cards, void>({
+      query: () => 'cards',
+    }),
+  }),
+});
+
+export const { useGetCardsQuery } = cardsApi;
