@@ -25,11 +25,29 @@ export const cardsSlice = createSlice({
       }
     );
     builder.addMatcher(
-      cardsApi.endpoints.createCard.matchFulfilled,
+      cardsApi.endpoints.saveCard.matchFulfilled,
       (state, action: PayloadAction<CardType>) => {
         const newCard = action.payload;
 
         state.cards = [...state.cards, newCard];
+      }
+    );
+    builder.addMatcher(
+      cardsApi.endpoints.editCard.matchFulfilled,
+      (state, action: PayloadAction<CardType>) => {
+        const editedCard = action.payload;
+        const cardToReplace = state.cards.find((card) => {
+          return card.id === editedCard.id;
+        });
+        const cardToReplaceIndex = state.cards.findIndex((card) => {
+          return card.id === (cardToReplace as CardType).id;
+        });
+
+        state.cards = [
+          ...state.cards.slice(0, cardToReplaceIndex),
+          editedCard,
+          ...state.cards.slice(cardToReplaceIndex + 1),
+        ];
       }
     );
   },

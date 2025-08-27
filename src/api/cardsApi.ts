@@ -1,4 +1,9 @@
-import type { CardForm, Cards, CardType } from '../types/types';
+import type {
+  CardFormType,
+  Cards,
+  CardType,
+  EditCardFormType,
+} from '../types/types';
 import { BASE_URL } from '../const';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -10,7 +15,7 @@ export const cardsApi = createApi({
     getCards: build.query<Cards, void>({
       query: () => 'cards',
     }),
-    createCard: build.mutation<CardType, CardForm>({
+    saveCard: build.mutation<CardType, CardFormType>({
       query: (card) => {
         return {
           url: 'cards',
@@ -21,7 +26,19 @@ export const cardsApi = createApi({
         };
       },
     }),
+    editCard: build.mutation<CardType, EditCardFormType>({
+      query: (card) => {
+        return {
+          url: `cards/${card.id}`,
+          method: 'PUT',
+          body: {
+            ...card,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetCardsQuery, useCreateCardMutation } = cardsApi;
+export const { useGetCardsQuery, useSaveCardMutation, useEditCardMutation } =
+  cardsApi;
