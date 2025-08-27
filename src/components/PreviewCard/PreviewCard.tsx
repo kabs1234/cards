@@ -1,13 +1,13 @@
 import { Button, Card, CardActions, CardContent, Modal } from '@mui/material';
 import { useState, type ReactElement } from 'react';
-import type { CardForm } from '../../types/types';
+import type { CardFormType } from '../../types/types';
 import { toast } from 'react-toastify';
 
 export default function PreviewCard({
   card,
   isFormValidated,
 }: {
-  card: CardForm;
+  card: CardFormType;
   isFormValidated: boolean;
 }): ReactElement {
   const [isPreviewCardOpen, setIsPreviewCardOpen] = useState<boolean>(false);

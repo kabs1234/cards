@@ -1,24 +1,24 @@
 import { Button } from '@mui/material';
 import type { ReactElement } from 'react';
-import { useCreateCardMutation } from '../../api/cardsApi';
-import type { CardForm } from '../../types/types';
+import type { CardFormType } from '../../types/types';
 import { toast } from 'react-toastify';
 import Loader from '../Loader/Loader';
+import { useSaveCardMutation } from '../../api/cardsApi';
 
 export default function SaveCardButton({
   card,
   isFormValidated,
   onCardSuccesfulSave,
 }: {
-  card: CardForm;
+  card: CardFormType;
   isFormValidated: boolean;
   onCardSuccesfulSave: () => void;
 }): ReactElement {
-  const [createCard, { isLoading }] = useCreateCardMutation();
+  const [saveCard, { isLoading }] = useSaveCardMutation();
 
-  const saveCard = async () => {
+  const tryToSaveCard = async () => {
     try {
-      await createCard(card).unwrap();
+      await saveCard(card).unwrap();
       toast.success('Card was created successfully!');
       onCardSuccesfulSave();
     } catch (err) {
@@ -31,7 +31,7 @@ export default function SaveCardButton({
 
   const onSaveCardButtonClick = (): void => {
     if (isFormValidated) {
-      saveCard();
+      tryToSaveCard();
     } else {
       toast.error('Fill all the fields please');
     }

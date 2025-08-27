@@ -1,9 +1,11 @@
-import { Card, CardContent, CardActions, Button } from '@mui/material';
+import { Card, CardContent, CardActions } from '@mui/material';
 import type { ReactElement } from 'react';
 import type { CardType } from '../../types/types';
 import dayjs from 'dayjs';
+import CardModal from '../CardModal/CardModal';
 
 export default function CardITem({
+  id,
   clientName,
   cardNumber,
   expiryDate,
@@ -12,6 +14,13 @@ export default function CardITem({
   createdAt,
 }: CardType): ReactElement {
   const humanizedCreatedData = dayjs(createdAt).format('DD.MM.YYYY');
+  const cardForm = {
+    cardNumber: String(cardNumber),
+    clientName,
+    expiryDate,
+    cvc: String(cvc),
+    cardType,
+  };
 
   return (
     <Card>
@@ -24,7 +33,7 @@ export default function CardITem({
         <p>{humanizedCreatedData}</p>
       </CardContent>
       <CardActions>
-        <Button size="small">Edit card</Button>
+        <CardModal isCardEdit cardEdit={{ ...cardForm, id: String(id) }} />
       </CardActions>
     </Card>
   );

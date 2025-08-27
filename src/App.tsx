@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import CardList from './pages/CardList';
-import CardForm from './components/CardForm/CardForm';
+import CardModal from './components/CardModal/CardModal';
 import './App.css';
 import { Box } from '@mui/material';
 import { useGetCardsQuery } from './api/cardsApi';
@@ -22,7 +22,7 @@ export default function App(): ReactElement {
 
   return (
     <Box sx={{ width: '280px', margin: '20px auto 0' }}>
-      <CardForm />
+      <CardModal />
 
       <CardList cards={cards} />
     </Box>
