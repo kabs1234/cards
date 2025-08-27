@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import type { CardType } from '../../types/types';
 import dayjs from 'dayjs';
 import CardModal from '../CardModal/CardModal';
+import DeleteCardButton from '../DeleteCardButton/DeleteCardButton';
 
 export default function CardITem({
   id,
@@ -14,7 +15,8 @@ export default function CardITem({
   createdAt,
 }: CardType): ReactElement {
   const humanizedCreatedData = dayjs(createdAt).format('DD.MM.YYYY');
-  const cardForm = {
+  const cardEditForm = {
+    id: String(id),
     cardNumber: String(cardNumber),
     clientName,
     expiryDate,
@@ -33,7 +35,8 @@ export default function CardITem({
         <p>{humanizedCreatedData}</p>
       </CardContent>
       <CardActions>
-        <CardModal isCardEdit cardEdit={{ ...cardForm, id: String(id) }} />
+        <CardModal isCardEdit cardEdit={cardEditForm} />
+        <DeleteCardButton cardId={id} />
       </CardActions>
     </Card>
   );

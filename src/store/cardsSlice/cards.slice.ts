@@ -50,5 +50,20 @@ export const cardsSlice = createSlice({
         ];
       }
     );
+    builder.addMatcher(
+      cardsApi.endpoints.deleteCard.matchFulfilled,
+      (state, action: PayloadAction<CardType>) => {
+        const cards = state.cards;
+        const deletedCard = action.payload;
+        const deletedCardIndex = cards.findIndex((card) => {
+          return card.id === deletedCard.id;
+        });
+
+        state.cards = [
+          ...cards.slice(0, deletedCardIndex),
+          ...cards.slice(deletedCardIndex + 1),
+        ];
+      }
+    );
   },
 });
