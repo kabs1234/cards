@@ -6,16 +6,24 @@ const loaderStyles = {
   top: 0,
   bottom: 0,
   right: 0,
-  left: '0',
-  margin: 'auto',
+  left: 0,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 };
 
-export default function Loader(): ReactElement {
+export default function Loader({
+  isActionLoader,
+}: {
+  isActionLoader?: boolean;
+}): ReactElement {
   return (
-    <Box sx={loaderStyles}>
+    <Box
+      sx={{
+        ...loaderStyles,
+        backgroundColor: isActionLoader ? 'rgba(0, 0, 0, 0.25)' : 'transparent',
+      }}
+    >
       <CircularProgress />
     </Box>
   );

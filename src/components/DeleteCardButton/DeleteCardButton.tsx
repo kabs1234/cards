@@ -46,19 +46,22 @@ export default function DeleteCardButton({
         open={isDeleteDialogOpen}
         onClose={onDeleteDialogClose}
         aria-labelledby="alert-dialog-title"
-        sx={{
-          backgroundColor: isLoading ? 'rgba(0,0,0, 0.15)' : 'transparent',
-        }}
       >
         <DialogTitle id="alert-dialog-title">Confirm card removal?</DialogTitle>
 
-        <DialogActions>
+        <DialogActions
+          sx={{
+            '& > :not(style) ~ :not(style)': {
+              marginLeft: 0,
+            },
+          }}
+        >
           <Button onClick={onDeleteDialogClose}>No</Button>
           <Button onClick={onDeleteCardButtonClick} disabled={isLoading}>
             {isLoading ? 'Deleting card...' : 'Yes'}
           </Button>
 
-          {isLoading && <Loader />}
+          {isLoading && <Loader isActionLoader />}
         </DialogActions>
       </Dialog>
     </>

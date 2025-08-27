@@ -44,7 +44,7 @@ export default function SaveCardButton({
 
   return (
     <>
-      {isLoading && <Loader />}
+      {isLoading && <Loader isActionLoader />}
 
       <Button onClick={onSaveCardButtonClick} disabled={isLoading}>
         {isLoading ? 'Saving card...' : 'Save card'}
