@@ -96,15 +96,7 @@ export default function CardModal({
         {isCardEdit ? 'Edit card' : 'Add card'}
       </Button>
 
-      <Modal
-        open={isFormOpen}
-        onClose={onFormClose}
-        sx={{
-          backgroundColor: isActionLoading
-            ? 'rgba(0,0,0, 0.35)'
-            : 'transparent',
-        }}
-      >
+      <Modal open={isFormOpen} onClose={onFormClose}>
         <Box sx={cardFormStyles}>
           <Button sx={closeFormButtonStyles} onClick={onFormClose}>
             <CloseIcon />

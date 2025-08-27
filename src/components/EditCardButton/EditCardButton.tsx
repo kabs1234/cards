@@ -44,7 +44,7 @@ export default function EditCardButton({
 
   return (
     <>
-      {isLoading && <Loader />}
+      {isLoading && <Loader isActionLoader />}
 
       <Button onClick={onEditCardButtonClick} disabled={isLoading}>
         {isLoading ? 'Editing card...' : 'Edit card'}
