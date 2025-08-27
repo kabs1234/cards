@@ -8,7 +8,6 @@ const loaderStyles = {
   right: 0,
   left: '0',
   margin: 'auto',
-  height: '100vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

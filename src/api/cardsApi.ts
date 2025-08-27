@@ -37,8 +37,20 @@ export const cardsApi = createApi({
         };
       },
     }),
+    deleteCard: build.mutation<CardType, number>({
+      query: (id) => {
+        return {
+          url: `cards/${id}`,
+          method: 'DELETE',
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetCardsQuery, useSaveCardMutation, useEditCardMutation } =
-  cardsApi;
+export const {
+  useGetCardsQuery,
+  useSaveCardMutation,
+  useEditCardMutation,
+  useDeleteCardMutation,
+} = cardsApi;
