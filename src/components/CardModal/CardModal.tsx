@@ -69,6 +69,10 @@ export default function CardModal({
   };
 
   const onFormClose = () => {
+    if (isActionLoading) {
+      return;
+    }
+
     setIsFormOpen(false);
   };
 
