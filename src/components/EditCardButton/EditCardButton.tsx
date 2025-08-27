@@ -6,26 +6,31 @@ import Loader from '../Loader/Loader';
 import type { EditCardFormType } from '../../types/types';
 
 export default function EditCardButton({
-  card,
   isFormValidated,
+  card,
   onCardSuccesfulEdit,
+  setIsActionLoading,
 }: {
-  card: EditCardFormType;
   isFormValidated: boolean;
+  card: EditCardFormType;
   onCardSuccesfulEdit: () => void;
+  setIsActionLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactElement {
   const [editCard, { isLoading }] = useEditCardMutation();
 
   const tryToEditCard = async () => {
     try {
+      setIsActionLoading(true);
       await editCard(card).unwrap();
       toast.success('Card was edited successfully!');
       onCardSuccesfulEdit();
     } catch (err) {
       toast.error(
-        'Unexpected error occured. Please try to save the card again'
+        'Unexpected error occured. Please try to edit the card again'
       );
       throw err;
+    } finally {
+      setIsActionLoading(false);
     }
   };
 

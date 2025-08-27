@@ -50,6 +50,8 @@ export default function CardModal({
   );
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
+  const [isActionLoading, setIsActionLoading] = useState<boolean>(false);
+
   const onFieldChange = (
     evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fieldName: string
@@ -66,7 +68,9 @@ export default function CardModal({
     return Object.values(cardForm).every(Boolean);
   };
 
-  const onFormClose = () => setIsFormOpen(false);
+  const onFormClose = () => {
+    setIsFormOpen(false);
+  };
 
   const onCardSuccesfulSave = (): void => {
     onFormClose();
@@ -88,7 +92,15 @@ export default function CardModal({
         {isCardEdit ? 'Edit card' : 'Add card'}
       </Button>
 
-      <Modal open={isFormOpen} onClose={onFormClose}>
+      <Modal
+        open={isFormOpen}
+        onClose={onFormClose}
+        sx={{
+          backgroundColor: isActionLoading
+            ? 'rgba(0,0,0, 0.35)'
+            : 'transparent',
+        }}
+      >
         <Box sx={cardFormStyles}>
           <Button sx={closeFormButtonStyles} onClick={onFormClose}>
             <CloseIcon />
@@ -104,12 +116,14 @@ export default function CardModal({
               card={{ ...cardForm, id: cardEdit.id }}
               isFormValidated={isFormValidated()}
               onCardSuccesfulEdit={onCardSuccesfulEdit}
+              setIsActionLoading={setIsActionLoading}
             />
           ) : (
             <SaveCardButton
               card={cardForm}
               isFormValidated={isFormValidated()}
               onCardSuccesfulSave={onCardSuccesfulSave}
+              setIsActionLoading={setIsActionLoading}
             />
           )}
         </Box>
