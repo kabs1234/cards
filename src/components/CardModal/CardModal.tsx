@@ -1,4 +1,4 @@
-import { Button, Modal, Box } from '@mui/material';
+import { Button, Modal, Box, type SelectChangeEvent } from '@mui/material';
 import { useState, type ChangeEvent, type ReactElement } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import type { CardFormType, EditCardFormType } from '../../types/types';
@@ -53,7 +53,9 @@ export default function CardModal({
   const [isActionLoading, setIsActionLoading] = useState<boolean>(false);
 
   const onFieldChange = (
-    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    evt:
+      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent,
     fieldName: string
   ): void => {
     const value = evt.target.value;
