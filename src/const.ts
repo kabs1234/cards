@@ -1,3 +1,5 @@
+export const FULL_NAME_REGEXP = '^[a-zA-Z А-Яа-я\\-]+$';
+
 export enum Namespace {
   Cards = 'Cards',
 }
