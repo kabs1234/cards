@@ -1,23 +1,24 @@
 import { Button, Card, CardActions, CardContent, Modal } from '@mui/material';
 import { useState, type ReactElement } from 'react';
 import type { CardFormType } from '../../types/types';
-import { toast } from 'react-toastify';
+import { showErrorToast } from '../../utils/utils';
 
 export default function PreviewCard({
   card,
-  isFormValidated,
+  isFormValid,
 }: {
   card: CardFormType;
-  isFormValidated: boolean;
+  isFormValid: boolean;
 }): ReactElement {
   const [isPreviewCardOpen, setIsPreviewCardOpen] = useState<boolean>(false);
+
   const onPreviewCardOpenButtonClick = (): void => {
-    if (isFormValidated) {
+    if (isFormValid) {
       setIsPreviewCardOpen(true);
       return;
     }
 
-    toast.error('Fill all the fields please');
+    showErrorToast('Fill all the fields please');
   };
 
   const OnPreviewCardClose = (): void => {
@@ -44,7 +45,7 @@ export default function PreviewCard({
             <p>{card.cardNumber}</p>
             <p>{card.expiryDate}</p>
             <p>{card.cvc}</p>
-            <p>{card.cardType}</p>
+            <p>{card.paymentSystem}</p>
           </CardContent>
           <CardActions sx={{ padding: 0 }}>
             <Button sx={{ marginLeft: '20px' }} onClick={OnPreviewCardClose}>

@@ -4,7 +4,7 @@ import type {
   CardType,
   EditCardFormType,
 } from '../types/types';
-import { BASE_URL } from '../const';
+import { BASE_URL } from '../const/const';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 

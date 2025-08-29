@@ -5,8 +5,8 @@ import './App.css';
 import { Box } from '@mui/material';
 import { useGetCardsQuery } from './api/cardsApi';
 import Loader from './components/Loader/Loader';
-import { useAppSelector } from './hooks/hooks';
 import { getCards } from './store/cardsSlice/card.selectors';
+import { useAppSelector } from './hooks/store';
 
 export default function App(): ReactElement {
   const { isUninitialized, isLoading, isError } = useGetCardsQuery();
