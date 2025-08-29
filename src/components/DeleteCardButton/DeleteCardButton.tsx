@@ -1,15 +1,24 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { useState, type ReactElement } from 'react';
-import { toast } from 'react-toastify';
 import Loader from '../Loader/Loader';
 import { useDeleteCardMutation } from '../../api/cardsApi';
+import { getIsLoading } from '../../store/cardsSlice/card.selectors';
+import { useQueryAction } from '../../hooks/hooks';
+import { useAppSelector } from '../../hooks/store';
+import type { CardType } from '../../types/types';
+import {
+  getActionErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from '../../utils/utils';
 
 export default function DeleteCardButton({
   cardId,
 }: {
   cardId: number;
 }): ReactElement {
-  const [deleteCard, { isLoading }] = useDeleteCardMutation();
+  const [deleteCard] = useDeleteCardMutation();
+  const isLoading = useAppSelector(getIsLoading);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
@@ -17,7 +26,7 @@ export default function DeleteCardButton({
     setIsDeleteDialogOpen(true);
   };
 
-  const onDeleteDialogClose = () => {
+  const onDialogClose = () => {
     if (isLoading) {
       return;
     }
@@ -25,17 +34,19 @@ export default function DeleteCardButton({
     setIsDeleteDialogOpen(false);
   };
 
-  const onDeleteCardButtonClick = async () => {
-    try {
-      await deleteCard(cardId).unwrap();
-      toast.success('Card was deleted successfully!');
-      onDeleteDialogClose();
-    } catch (err) {
-      toast.error(
-        'Unexpected error occured. Please try to delete the card again'
-      );
-      throw err;
-    }
+  const onCardSuccesfulDelete = () => {
+    showSuccessToast('Card was deleted successfully!');
+    onDialogClose();
+  };
+
+  const tryToDeleteCard = useQueryAction<CardType, number>({
+    action: deleteCard,
+    onSuccess: () => onCardSuccesfulDelete(),
+    onError: () => showErrorToast(getActionErrorMessage('delete')),
+  });
+
+  const onDeleteCardButtonClick = () => {
+    tryToDeleteCard(cardId);
   };
 
   return (
@@ -44,7 +55,7 @@ export default function DeleteCardButton({
 
       <Dialog
         open={isDeleteDialogOpen}
-        onClose={onDeleteDialogClose}
+        onClose={onDialogClose}
         aria-labelledby="alert-dialog-title"
       >
         <DialogTitle id="alert-dialog-title">Confirm card removal?</DialogTitle>
@@ -56,7 +67,7 @@ export default function DeleteCardButton({
             },
           }}
         >
-          <Button onClick={onDeleteDialogClose}>No</Button>
+          <Button onClick={onDialogClose}>No</Button>
           <Button onClick={onDeleteCardButtonClick} disabled={isLoading}>
             {isLoading ? 'Deleting card...' : 'Yes'}
           </Button>

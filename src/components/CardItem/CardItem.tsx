@@ -11,7 +11,7 @@ export default function CardITem({
   cardNumber,
   expiryDate,
   cvc,
-  cardType,
+  paymentSystem,
   createdAt,
 }: CardType): ReactElement {
   const humanizedCreatedData = dayjs(createdAt).format('DD.MM.YYYY');
@@ -21,7 +21,7 @@ export default function CardITem({
     clientName,
     expiryDate,
     cvc: String(cvc),
-    cardType,
+    paymentSystem,
   };
 
   return (
@@ -31,11 +31,11 @@ export default function CardITem({
         <p>{cardNumber}</p>
         <p>{expiryDate}</p>
         <p>{cvc}</p>
-        <p>{cardType}</p>
+        <p>{paymentSystem}</p>
         <p>{humanizedCreatedData}</p>
       </CardContent>
       <CardActions>
-        <CardModal isCardEdit cardEdit={cardEditForm} />
+        <CardModal cardEdit={cardEditForm} />
         <DeleteCardButton cardId={id} />
       </CardActions>
     </Card>

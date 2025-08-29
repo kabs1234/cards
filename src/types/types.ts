@@ -1,10 +1,12 @@
+export type CardPaymentSystems = 'Visa' | 'Mastercard' | undefined;
+
 export type CardType = {
   id: number;
   clientName: string;
   cardNumber: number;
   expiryDate: string;
   cvc: number;
-  cardType: string;
+  paymentSystem: CardPaymentSystems;
   createdAt: string;
 };
 
@@ -13,7 +15,7 @@ export type CardFormType = {
   clientName: string;
   expiryDate: string;
   cvc: string;
-  cardType: string;
+  paymentSystem: CardPaymentSystems;
 };
 
 export type Cards = CardType[];
@@ -24,5 +26,7 @@ export type EditCardFormType = {
   clientName: string;
   expiryDate: string;
   cvc: string;
-  cardType: string;
+  paymentSystem: CardPaymentSystems;
 };
+
+export type CardActions = 'edit' | 'save' | 'delete';

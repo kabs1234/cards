@@ -1,4 +1,4 @@
-import { Namespace } from '../const';
+import { Namespace } from '../const/const';
 import { cardsApi } from '../api/cardsApi';
 import { combineReducers } from '@reduxjs/toolkit';
 import { cardsSlice } from './cardsSlice/cards.slice';
